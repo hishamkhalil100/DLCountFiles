@@ -14,7 +14,7 @@ namespace DLCountFiles
         //  static OdbcConnection con1 = new OdbcConnection("Driver=Sybase ASE ODBC Driver;SRVR=production;DB=kfnl;UID=sa;PWd=sybase1;");
         static void Main(string[] args)
         {
-            string folderPath = @"\\192.168.1.112\مشروع المكتبة الرقمية\أعمال المعالجة\مقالات تم رقعها\splited_final";
+            string folderPath = @"\\192.168.1.112\مشروع المكتبة الرقمية\أعمال الرقمنة";
             DirectoryInfo di = new DirectoryInfo(folderPath);
 
             
@@ -83,7 +83,10 @@ namespace DLCountFiles
             // Process the list of files found in the directory.
             FileInfo[] fileEntries = targetDirectory.GetFiles();
             foreach (FileInfo fileName in fileEntries)
-                ProcessFile(fileName);
+            {
+                if (fileName.Extension.Equals(".pdf") || fileName.Extension.Equals(".PDF"))
+                    ProcessFile(fileName);
+            }
 
             // Recurse into subdirectories of this directory.
             DirectoryInfo[] subdirectoryEntries = targetDirectory.GetDirectories();
@@ -119,7 +122,7 @@ namespace DLCountFiles
                 try
                 {
                     Console.WriteLine(bibNo);
-                    OdbcCommand commandItem = new OdbcCommand(@"insert into dbo.DLARTICLE (bib#,FileName,FilePath) values (?,?,?)", con1);
+                    OdbcCommand commandItem = new OdbcCommand(@"insert into dbo.dlibrarybibs_19_05_2020 (bib#,FileName,FilePath) values (?,?,?)", con1);
                     commandItem.Parameters.Add(new OdbcParameter("@bib#", bibNo));
                     commandItem.Parameters.Add(new OdbcParameter("@bib#", file.Name));
                     commandItem.Parameters.Add(new OdbcParameter("@bib#", Path.GetFullPath(file.DirectoryName)));
