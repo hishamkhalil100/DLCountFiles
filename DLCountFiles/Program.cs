@@ -14,7 +14,7 @@ namespace DLCountFiles
         //  static OdbcConnection con1 = new OdbcConnection("Driver=Sybase ASE ODBC Driver;SRVR=production;DB=kfnl;UID=sa;PWd=sybase1;");
         static void Main(string[] args)
         {
-            string folderPath = @"\\192.168.1.112\مشروع المكتبة الرقمية\أعمال الرقمنة";
+            string folderPath = @"\\kfnl-sf01\مخرجات التشغيل\غلافات العناوين - كتب الملك سلمان - 10-11-2021";
             DirectoryInfo di = new DirectoryInfo(folderPath);
 
             
@@ -84,7 +84,7 @@ namespace DLCountFiles
             FileInfo[] fileEntries = targetDirectory.GetFiles();
             foreach (FileInfo fileName in fileEntries)
             {
-                if (fileName.Extension.Equals(".pdf") || fileName.Extension.Equals(".PDF"))
+               // if (fileName.Extension.Equals(".pdf") || fileName.Extension.Equals(".PDF"))
                     ProcessFile(fileName);
             }
 
@@ -122,7 +122,7 @@ namespace DLCountFiles
                 try
                 {
                     Console.WriteLine(bibNo);
-                    OdbcCommand commandItem = new OdbcCommand(@"insert into dbo.dlibrarybibs_19_05_2020 (bib#,FileName,FilePath) values (?,?,?)", con1);
+                    OdbcCommand commandItem = new OdbcCommand(@"insert into dbo.tempKingSalman_10_11_2021 (bib#,FileName,FilePath) values (?,?,?)", con1);
                     commandItem.Parameters.Add(new OdbcParameter("@bib#", bibNo));
                     commandItem.Parameters.Add(new OdbcParameter("@bib#", file.Name));
                     commandItem.Parameters.Add(new OdbcParameter("@bib#", Path.GetFullPath(file.DirectoryName)));
