@@ -24,7 +24,6 @@ namespace DLCountFiles
             }
 
         }
-
         // Process all files in the directory passed in, recurse on any directories 
         // that are found, and process the files they contain.
         public static void ProcessDirectory(DirectoryInfo targetDirectory, OdbcConnection con1)
@@ -45,7 +44,6 @@ namespace DLCountFiles
                 ProcessDirectory(subdirectory, con1);
             }
         }
-
         // Insert logic for processing found files here.
         public static void ProcessFile(FileInfo file, OdbcConnection con1)
         {
@@ -87,9 +85,7 @@ namespace DLCountFiles
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-
             }
-
         }
     }
 }
