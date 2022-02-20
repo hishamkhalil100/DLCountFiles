@@ -19,21 +19,16 @@ namespace DLCountFiles
                 con1.Open();
                 string folderPath = @"\\kfnl-fs01\g$\TempDLCovers\New folder\7-New\7";
                 DirectoryInfo di = new DirectoryInfo(folderPath);
-
-
                 // This path is a file
                 ProcessDirectory(di, con1);
             }
 
         }
 
-
         // Process all files in the directory passed in, recurse on any directories 
         // that are found, and process the files they contain.
         public static void ProcessDirectory(DirectoryInfo targetDirectory, OdbcConnection con1)
         {
-
-
             // Process the list of files found in the directory.
             FileInfo[] fileEntries = targetDirectory.GetFiles();
             foreach (FileInfo fileName in fileEntries)
@@ -42,7 +37,6 @@ namespace DLCountFiles
                 // if (fileName.Extension.Equals(".pdf") || fileName.Extension.Equals(".PDF"))
                 ProcessFile(fileName, con1);
             }
-
             // Recurse into subdirectories of this directory.
             DirectoryInfo[] subdirectoryEntries = targetDirectory.GetDirectories();
             foreach (DirectoryInfo subdirectory in subdirectoryEntries)
@@ -55,16 +49,9 @@ namespace DLCountFiles
         // Insert logic for processing found files here.
         public static void ProcessFile(FileInfo file, OdbcConnection con1)
         {
-
-
-
-
             string s = string.Empty;
             try
             {
-
-
-
                 int bibNo = 0;
                 s = file.Name;
                 //string fileName = file.Name;
@@ -80,12 +67,14 @@ namespace DLCountFiles
                 {
                     bibNo = int.Parse(file.Name.ToLower().Replace(".png", ""));
                 }
+                else if (file.Name.ToLower().Contains("tif"))
+                {
+                    return;
+                }
                 else
                 {
                     bibNo = int.Parse(file.Name.ToLower().Replace(".pdf", ""));
                 }
-
-
 
                 Console.WriteLine(bibNo);
                 OdbcCommand commandItem = new OdbcCommand(@"insert into dbo.tempDlCoversFromAbst (bib#,FileName,FilePath) values (?,?,?)", con1);
@@ -94,10 +83,6 @@ namespace DLCountFiles
                 commandItem.Parameters.Add(new OdbcParameter("@bib#", Path.GetFullPath(file.DirectoryName)));
                 commandItem.ExecuteNonQuery();
                 Console.WriteLine("Finish!");
-
-
-
-
             }
             catch (Exception ex)
             {
